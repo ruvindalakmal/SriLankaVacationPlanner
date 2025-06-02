@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{ Header :: header }">
+</head>
+<body>
+<nav th:replace="~{TopNavBar :: topNavBar}"></nav>
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-12 text-center fw-bold title">
+      <h1>Transport Management</h1>
+    </div>
+  </div>
+  <!--Modal Button-->
+  <div class="row mt-2">
+    <div class="col-12 text-end">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTransportForm">
+        Add Transport
+      </button>
+    </div>
+  </div>
+    <!--Modal Form-->
+    <div class="modal fade" id="modalTransportForm" tabindex="-1" aria-labelledby="modalTransportFormLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h5 class="modal-title" id="modalTransportFormLabel">Add New Vehicle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="card">
+              <div class="card-body form-area">
+                <form id="formTransport" onsubmit="return false;">
+                  <div class="row mt-2"></div>
+
+                  <div class="row mt-2">
+                    <!--Vehicle Type-->
+                    <div class="col-6">
+                      <label for="selectVehicleType" class="form-label fw-bold">Vehicle Type:<span class="text-danger">*</span></label>
+                      <select class="form-select" id="selectVehicleType" onchange="vehicleTypeValidator(this, 'vehicle' , 'vehicleType')" required>
+                      </select>
+                    </div>
+                    <!--Vehicle License Number-->
+                      <div class="col-6">
+                        <label for="textVehicleLicenseNumber" class="form-label fw-bold">Vehicle License Number:<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" id="textVehicleLicenseNumber" placeholder="Enter Vehicle License Number" onkeyup="vehicleLicenseValidator(this , 'vehicle' , 'licenseNo')" required>
+                        <div class="form-text">ex: CAA-5678</div>
+                      </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Register Date-->
+                    <div class="col-6">
+                      <label for="textVehicleRegisterDate" class="form-label fw-bold">Vehicle Register Date:<span class="text-danger">*</span></label>
+                      <input class="form-control" type="date" id="textVehicleRegisterDate" onchange="dateValidator(this, 'vehicle' , 'registerDate')" required>
+                    </div>
+                    <!--Manufacture-->
+                    <div class="col-6">
+                        <label for="textVehicleManufacture" class="form-label fw-bold">Vehicle Manufacture:<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" id="textVehicleManufacture" placeholder="Enter Vehicle Manufacture" onkeyup="vehicleManufacturerValidator(this , 'vehicle' , 'manufacturer')" required>
+                        <div class="form-text">ex: Toyota</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Vehicle Model-->
+                    <div class="col-6">
+                      <label for="textVehicleModel" class="form-label fw-bold">Vehicle Model:<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" id="textVehicleModel" placeholder="Enter Vehicle Model" onkeyup="vehicleModelValidator(this , 'vehicle' , 'model')" required>
+                        <div class="form-text">ex: Aqua</div>
+                    </div>
+                    <!--Year of Made-->
+                    <div class="col-6">
+                        <label for="textVehicleYearOfMade" class="form-label fw-bold">Vehicle Year of Made:<span class="text-danger">*</span></label>
+                        <input class="form-control" type="number" id="textVehicleYearOfMade" placeholder="Enter Vehicle Year of Made" onkeyup="yearOfMadeValidator(this , 'vehicle' , 'year')" required>
+                            <div class="form-text">ex: 2020</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Vehicle Chassis Number-->
+                    <div class="col-6">
+                      <label for="textVehicleChassisNumber" class="form-label fw-bold">Vehicle Chassis Number:<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" id="textVehicleChassisNumber" placeholder="Enter Vehicle Chassis Number" onkeyup="vehicleChassisNumberValidator(this , 'vehicle' , 'chassisNumber')" required>
+                        <div class="form-text">ex: 1234567890</div>
+                    </div>
+                    <!--Seat Count-->
+                    <div class="col-6">
+                        <label for="textVehicleSeatCount" class="form-label fw-bold">Vehicle Seat Count:<span class="text-danger">*</span></label>
+                        <input class="form-control" type="number" id="textVehicleSeatCount" placeholder="Enter Vehicle Seat Count" onkeyup="seatCountValidator(this , 'vehicle' , 'seatCount')" required>
+                            <div class="form-text">ex: 4</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Transmission Type-->
+                    <div class="col-6">
+                      <label for="selectVehicleTransmissionType" class="form-label fw-bold">Vehicle Transmission Type:<span class="text-danger">*</span></label>
+                      <select class="form-select" id="selectVehicleTransmissionType" onchange="transmissionTypeValidator(this , 'vehicle' , 'transmissionType')" required>
+                      </select>
+                    </div>
+                    <!--Fuel Type-->
+                    <div class="col-6">
+                      <label for="selectVehicleFuelType" class="form-label fw-bold">Vehicle Fuel Type:<span class="text-danger">*</span></label>
+                      <select class="form-select" id="selectVehicleFuelType" onchange="fuelTypeValidator(this , 'vehicle' , 'fuelType')" required>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Air Conditioning-->
+                    <div class="col-6">
+                      <label for="selectVehicleAirConditioning" class="form-label fw-bold">Vehicle Air Conditioning:</label>
+                      <select class="form-select" id="selectVehicleAirConditioning" onchange="airConditioningValidator(this , 'vehicle' , 'airConditioning')">
+                      </select>
+                    </div>
+                    <!--Rate Per Kilometer-->
+                    <div class="col-6">
+                      <label for="textVehicleRatePerKilometer" class="form-label fw-bold">Vehicle Rate Per Kilometer:<span class="text-danger">*</span></label>
+                      <input class="form-control" type="number" id="textVehicleRatePerKilometer" placeholder="Enter Vehicle Rate Per Kilometer" onkeyup="ratePerKilometerValidator(this , 'vehicle' , 'ratePerKm')" required>
+                        <div class="form-text">ex: 100</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Insurance Expiry Date-->
+                    <div class="col-6">
+                      <label for="textVehicleInsuranceExpiryDate" class="form-label fw-bold">Vehicle Insurance Expiry Date:</label>
+                      <input class="form-control" type="date" id="textVehicleInsuranceExpiryDate" onchange="expiryDateValidator(this , 'vehicle' , 'insuranceExpiryDate')">
+                        <div class="form-text">ex: 2024-12-31</div>
+                    </div>
+                    <!--Registration Expiry Date-->
+                    <div class="col-6">
+                      <label for="textVehicleRegistrationExpiryDate" class="form-label fw-bold">Vehicle Registration Expiry Date:</label>
+                      <input class="form-control" type="date" id="textVehicleRegistrationExpiryDate" onchange="expiryDateValidator(this , 'vehicle' , 'registrationExpiryDate')">
+                        <div class="form-text">ex: 2024-12-31</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Color-->
+                    <div class="col-6">
+                      <label for="textVehicleColor" class="form-label fw-bold">Vehicle Color</label>
+                        <input class="form-control" type="text" id="textVehicleColor" placeholder="Enter Vehicle Color" onkeyup="vehicleColorValidator(this , 'vehicle' , 'color')">
+                            <div class="form-text">ex: Red</div>
+                    </div>
+                    <!--Driver-->
+                    <div class="col-6">
+                      <label for="selectDriver" class="form-label fw-bold">Driver:<span class="text-danger">*</span></label>
+                      <select class="form-select" id="selectDriver" required>
+                        <option value="" selected disabled>Select Driver</option>
+                        <option value="Driver 1">Driver 1</option>
+                        <option value="Driver 2">Driver 2</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Description-->
+                    <div class="col-6">
+                      <label for="textVehicleDescription" class="form-label fw-bold">Vehicle Description:</label>
+                      <textarea class="form-control" id="textVehicleDescription" rows="2" placeholder="Enter Vehicle Description" onkeyup="vehicleDescriptionValidator(this , 'vehicle' , 'description')"></textarea>
+                    </div>
+                    <!--Current Owner-->
+                    <div class="col-6">
+                      <label for="textVehicleCurrentOwner" class="form-label fw-bold">Vehicle Current Owner:<span class="text-danger">*</span></label>
+                      <input class="form-control" type="text" id="textVehicleCurrentOwner" placeholder="Enter Vehicle Current Owner" onkeyup="vehicleCurrentOwnerValidator(this , 'vehicle' , 'ownerName')" required>
+                        <div class="form-text">ex: John Doe</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Vehicle Owner Address-->
+                    <div class="col-6">
+                      <label for="textOwnerAddress" class="form-label fw-bold">Vehicle Owner Address:<span class="text-danger">*</span></label>
+                        <input class="form-control" type="text" id="textOwnerAddress" placeholder="Enter Vehicle Owner Address" onkeyup="vehicleOwnerAddressValidator(this , 'vehicle' , 'ownerAddress')" required>
+                            <div class="form-text">ex: 123 Main St, City</div>
+                    </div>
+                    <!--Vehicle Owner Contact Details-->
+                    <div class="col-6">
+                        <label for="textOwnerContactNumber" class="form-label fw-bold">Vehicle Owner Contact Number:<span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="textOwnerContactNumber" placeholder="Enter Vehicle Owner Contact Number" onkeyup="mobileNumberValidator(this , 'vehicle' , 'ownerMobileNumber')" required>
+                                <div class="form-text">ex: 0763284859</div>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <!--Vehicle Agency Name-->
+                    <div class="col-6">
+                      <label for="textVehicleAgencyName" class="form-label fw-bold">Vehicle Agency Name:</label>
+                      <input class="form-control" type="text" id="textVehicleAgencyName" placeholder="Enter Vehicle Agency Name" onkeyup="vehicleAgencyNameValidator(this , 'vehicle' , 'agencyName')">
+                        <div class="form-text">ex: ABC Transport</div>
+                    </div>
+                    <!--Vehicle Agency Contact Number-->
+                    <div class="col-6">
+                      <label for="textVehicleAgencyContactNumber" class="form-label fw-bold">Vehicle Agency Contact Number:</label>
+                      <input class="form-control" type="text" id="textVehicleAgencyContactNumber" placeholder="Enter Vehicle Agency Contact Number" onkeyup="vehicleAgencyContactNumberValidator(this , 'vehicle' , 'contactNumber')">
+                        <div class="form-text">ex: 0771234567</div>
+                    </div>
+                  </div>
+                  <!--Buttons-->
+                  <div class="row mt-2">
+                    <div class="col-3 text-start">
+                      <button type="button" class="btn btn-outline-info" onclick="buttonVehicleDelete()"><i class="fa-regular fa-circle-check"></i> Clear</button>
+                    </div>
+                    <div class="col-9 text-end">
+                      <button type="submit" id="buttonUpdate" class="btn btn-outline-warning" onclick="buttonVehicleUpdate()"><i class="fa-solid fa-wrench"></i> Update</button>
+                      <button type="submit" id="buttonSubmit" class="btn btn-outline-success" onclick="buttonVehicleSubmit()"> <i class="fa-solid fa-thumbs-up"></i> Submit</button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!--Table Area-->
+  <div class="row m-2 justify-content-center">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover table-striped" id="tableTransport">
+            <thead>
+                <tr>
+                  <th>#</th>
+                <th>Vehicle Type</th>
+                <th>License Number</th>
+<!--                <th>Vehicle Register Date</th>-->
+                <th>Manufacturer</th>
+                <th>Model</th>
+                <th>Year</th>
+<!--                <th>Vehicle Chassis Number</th>-->
+                <th>Seat Count</th>
+                <th>Transmission</th>
+                <th>Fuel Type</th>
+<!--                <th>Vehicle Air Conditioning</th>-->
+<!--                <th class="text-center">Rate Per Kilometer</th>-->
+                <th>Insurance Expiry Date</th>
+                <th>Registration Expiry Date</th>
+                <th>Color</th>
+<!--                <th class="text-center">Driver</th>-->
+<!--                <th>Vehicle Description</th>-->
+                <th>Owner</th>
+<!--                <th class="text-center">Owner Address</th>-->
+                <th>Owner Contact Number</th>
+                <th>Modify</th>
+                </tr>
+            </thead>
+            <tbody id="tbodyTransport">
+            </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+</div>
+<script src="/Jquery/jQuery-3.7.1.min.js"></script>
+<script src="/script/Common.js"></script>
+<script src="/uicontroller/Vehicle.js"></script>
+<script src="/script/Validator.js"></script>
+</body>
+</html>

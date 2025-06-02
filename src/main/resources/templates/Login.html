@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BIT Project</title>
+    <link rel="stylesheet" href="/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+    <script src="/bootstrap-5.0.2-dist/js/bootstrap.bundle.js"></script>
+    <style>
+        body {
+            background: url('/background_image.jpg') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .form-control {
+            border-radius: 10px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        .btn {
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2, p, label {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card text-center">
+                <h2 class="mb-3">Login</h2>
+                <form method="POST" action="/login">
+                    <div class="mb-3">
+                        <label for="textUserName" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="textUserName" name="username" placeholder="Enter Username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="textPassword" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="textPassword" name="password" placeholder="Enter Password" required>
+                    </div>
+                    <div class="text-danger text-center" th:if="${param.error}">
+                        <small>Login Failed: Invalid Username or Password</small>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <button type="submit" id="btnLogin" class="btn btn-light fw-bold">Log In</button>
+                    </div>
+                    <p class="mt-3"><a href="#" class="text-white">Forgot password?</a></p>
+                    <p class="mt-2">Don't have an account? <a href="#" class="text-white">Register</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace = "Header :: header">
+</head>
+<body>
+    <nav th:replace = "~{TopNavBar :: topNavBar}"></nav>
+    <div class="container-fluid">
+        <!--Title-->
+        <div class="row m-2">
+            <div class="col-12 text-center fw-bold title p-2">
+                <h2>User Management</h2>
+            </div>
+        </div>
+        <!--Form and Table-->
+        <div class="row m-2">
+            <!--Form-->
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-body form-area">
+                        <form onsubmit="return false" id="formUser">
+                            <!--Required Mark-->
+                            <div class="row mt-1">
+                                <div class="col text-end fw-bold">
+                                    <p>Required<span class="text-danger">*</span></p>
+                                </div>
+                            </div>
+                            <!--Employee-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectEmployee">Employee : <span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <select id="selectEmployee" name="selectEmployee" class="form-select" onchange="selectValidator(this , 'user' , 'employee_id'); populateEmail(this)" required></select>
+                                </div>
+                            </div>
+                            <!--Username-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="textUserName">User Name :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <input type="text" id="textUserName" name="textUserName" class="form-control" placeholder="Enter User Name" onkeyup="usernameValidator(this , 'user' , 'username')" required>
+                                </div>
+                            </div>
+                            <!--Password-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="textPassword">Password :<span class="text-danger">*</span></label>
+                                <div class="col-8" id="passwordDiv">
+                                    <input type="text" id="textPassword" name="textPassword" class="form-control" placeholder="Enter Password"
+                                           onkeyup="passwordValidator(this , 'user' , 'password'); retypePasswordValidator(document.getElementById('textRetypePassword'), 'user', 'confirmPassword', 'textPassword')" required>
+                                </div>
+
+                            </div>
+                            <!--Retype Password-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="textRetypePassword">Retype-Password :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <input type="text" id="textRetypePassword" name="textRetypePassword" class="form-control" placeholder="Enter Retype-Password" onkeyup="retypePasswordValidator(this, 'user', 'confirmPassword', 'textPassword')" required>
+                                </div>
+                            </div>
+                            <!--Email-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="textEmail">Email :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <input type="text" id="textEmail" name="textEmail" class="form-control" placeholder="Enter Email" onkeyup="emailValidator(this,'user' , 'email')" required>
+                                </div>
+                            </div>
+                            <!--Roles-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2">Roles :<span class="text-danger">*</span></label>
+                                <div id="divRoles"></div>
+                            </div>
+                            <!--Note-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="textNote">Note :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <textarea type="" id="textNote" name="textNote" class="form-control" placeholder="Enter Note" onkeyup="noteValidator(this , 'user' , 'note')"></textarea>
+                                </div>
+                            </div>
+                            <!--Status-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2">User Status :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline mt-2">
+                                        <input class="form-check-input" type="checkbox" id="chkBoxStatus" onchange="if (this.checked){
+                                            labelUserStatus.innerText = 'User Account is Active';
+                                            user.status = true;
+                                        }else {
+                                            labelUserStatus.innerText = 'User Account is Inactive';
+                                            user.status = false;
+                                        }" checked>
+                                        <label class="form-check-label" id="labelUserStatus" for="chkBoxStatus">User Account is Active</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Buttons-->
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-info fw-bold" onclick="buttonUserClear()">Clear</button>
+                                </div>
+                                <div class="col-8 text-end">
+                                    <button type="submit" id="buttonUpdate" class="btn btn-outline-warning fw-bold" onclick="buttonUserUpdate()">Update</button>
+                                    <button type="submit" id="buttonSubmit" class="btn btn-outline-success fw-bold" onclick="buttonUserSubmit()">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--Table-->
+            <div class="col-7">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-striped" id="tableUser">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Employee</th>
+                                    <th>User Name</th>
+                                    <th>Email</th>
+                                    <th>Roles</th>
+                                    <th>Status</th>
+                                    <th>Modify</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBodyUser"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/Jquery/jQuery-3.7.1.min.js"></script>
+    <script src="/script/Common.js"></script>
+    <script src="/uicontroller/User.js"></script>
+    <script src="/script/Validator.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace = "Header :: header">
+</head>
+<body>
+    <nav th:replace = "~{TopNavBar :: topNavBar}"></nav>
+    <div class="container-fluid">
+        <!--Title-->
+        <div class="row m-2">
+            <div class="col-12 text-center fw-bold title p-2">
+                <h2>Privilege Management</h2>
+            </div>
+        </div>
+        <!--Form and Table-->
+        <div class="row m-2">
+            <!--Form-->
+            <div class="col-5">
+                <div class="card">
+                    <div class="card-body form-area">
+                        <form id="formPrivilege" onsubmit="return false;">
+                            <!--Required Mark-->
+                            <div class="row mt-1">
+                                <div class="col text-end fw-bold">
+                                    <p>Required<span class="text-danger">*</span></p>
+                                </div>
+                            </div>
+                            <!--Role-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectRole">Role :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <select id="selectRole" class="form-select" required onchange="this.style.border = '2px solid green'; privilege.role_id = JSON.parse(this.value)"></select>
+                                </div>
+                            </div>
+                            <!--Module-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectModule">Module :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <select id="selectModule" class="form-select" required onchange="this.style.border = '2px solid green'; privilege.module_id = JSON.parse(this.value)"></select>
+                                </div>
+                            </div>
+                            <!--Select-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectModule">Select :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="chkboxSelect" class="form-check-input" onchange="if (this.checked){
+                                            privilege.privi_select = true;
+                                            labelSelect.innerText = 'Select Privilege Granted';
+                                        }else {
+                                            privilege.privi_select = false;
+                                            labelSelect.innerText = 'Select Privilege Not Granted';
+                                        }">
+                                        <label class="form-check-label fw-bold" for="chkboxSelect" id="labelSelect">Select Privilage Not Granted</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Insert-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectModule">Insert :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="chkboxInsert" class="form-check-input" onchange="if (this.checked){
+                                            privilege.privi_insert = true;
+                                            labelInsert.innerText = 'Insert Privilege Granted';
+                                        }else {
+                                            privilege.privi_insert = false;
+                                            labelInsert.innerText = 'Insert Privilege Not Granted';
+                                        }">
+                                        <label class="form-check-label fw-bold" for="chkboxInsert" id="labelInsert">Insert Privilege Not Granted</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Update-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectModule">Update :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="chkboxUpdate" class="form-check-input" onchange="if (this.checked){
+                                            privilege.privi_update = true;
+                                            labelUpdate.innerText = 'Update Privilege Granted';
+                                        }else {
+                                            privilege.privi_update = false;
+                                            labelUpdate.innerText = 'Update Privilege Not Granted';
+                                        }">
+                                        <label class="form-check-label fw-bold" for="chkboxUpdate" id="labelUpdate">Update Privilege Not Granted</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Delete-->
+                            <div class="row mt-2">
+                                <label class="col-4 form-label fw-bold mt-2" for="selectModule">Delete :<span class="text-danger">*</span></label>
+                                <div class="col-8">
+                                    <div class="form-check form-check-inline">
+                                        <input type="checkbox" id="chkboxDelete" class="form-check-input" onchange="if (this.checked){
+                                            privilege.privi_delete = true;
+                                            labelDelete.innerText = 'Delete Privilege Granted';
+                                        }else {
+                                            privilege.privi_delete = false;
+                                            labelDelete.innerText = 'Delete Privilege Not Granted';
+                                        }">
+                                        <label class="form-check-label fw-bold" for="chkboxDelete" id="labelDelete">Delete Privilege Not Granted</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Buttons-->
+                            <div class="row mt-2">
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-outline-info fw-bold">Clear</button>
+                                </div>
+                                <div class="col-8 text-end">
+                                    <button type="submit" id="buttonUpdate" class="btn btn-outline-warning fw-bold" onclick="buttonPrivilegeUpdate()">Update</button>
+                                    <button type="submit" id="buttonSubmit" class="btn btn-outline-success fw-bold" onclick="buttonPrivilegeSubmit()">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--Table-->
+            <div class="col-7"  >
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-hover table-striped" id="tablePrivilege">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Role</th>
+                                    <th>Module</th>
+                                    <th>Select</th>
+                                    <th>Insert</th>
+                                    <th>Update</th>
+                                    <th>Delete</th>
+                                    <th>Modify</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBodyPrivilege">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Print Modal-->
+        <div class="modal fade" id="printPrivilegeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Print Privileges</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body form-area">
+                                <table id="tablePrivilegeModal" class="table table-hover table-striped table-bordered">
+                                    <tr>
+                                        <th>Role</th><td id="tdRole"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Module</th><td id="tdModule"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Select</th><td id="tdSelect"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Insert</th><td id="tdInsert"></td>
+
+                                    </tr>
+                                    <tr>
+                                        <th>Update</th><td id="tdUpdate"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Delete</th><td id="tdDelete"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="printButtonRow()">Print</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/Jquery/jQuery-3.7.1.min.js"></script>
+    <script src="/script/Common.js"></script>
+    <script src="/uicontroller/Privilege.js"></script>
+</body>
+</html>

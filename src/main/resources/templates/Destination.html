@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace = "~{Header :: header}">
+</head>
+<body>
+    <nav th:replace = "~{TopNavBar :: topNavBar}"></nav>
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-12 text-center fw-bold title">
+                <h1>Destination Management</h1>
+            </div>
+        </div>
+        <!--Model Button-->
+        <div class="row mt-2">
+            <div class="col-12 text-end">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modelDestinationForm">
+                    Add Destination
+                </button>
+            </div>
+        </div>
+        <!--Modal Form-->
+        <div class="modal fade" id="modelDestinationForm" tabindex="-1" aria-labelledby="modalDestinationFormLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h5 class="modal-title" id="modalDestinationFormLabel">Add Destination</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body form-area">
+                                <form id="formDestination" onsubmit="return false">
+                                    <div class="row mt-2"></div>
+                                    <div class="row mt-2">
+                                        <!--Venue Name-->
+                                        <div class="col-6">
+                                            <label for="textVenueName" class="form-label fw-bold">Venue Name:<span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="textVenueName" name="venueName" placeholder="Enter Venue Name" required>
+                                            <div class="form-text">ex: Sigiriya</div>
+                                        </div>
+                                        <!--Description-->
+                                        <div class="col-6">
+                                            <label for="textVenueDescription" class="form-label fw-bold">Description</label>
+                                            <textarea type="text" class="form-control" id="textVenueDescription" name="description" placeholder="Enter Description" required></textarea>
+                                        </div>
+                                    </div>
+                                    <!-- Dynamic Venue Fees Section -->
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold">Venue Fees:</label>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="feeTable">
+                                                    <thead class="table-light">
+                                                    <tr>
+                                                        <th>Audience Type</th>
+                                                        <th>Currency</th>
+                                                        <th>Amount</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <!-- Initial Fee Row -->
+                                                    <tr>
+                                                        <td>
+                                                            <select name="audienceType[]" class="form-select" required>
+                                                                <option value="adult">Adult</option>
+                                                                <option value="child">Child</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="currency[]" class="form-select" required>
+                                                                <option value="LKR">LKR</option>
+                                                                <option value="USD">USD</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" name="amount[]" class="form-control" placeholder="0.00" step="0.01" required>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeFeeRow(this)">🗑</button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- Button to add more rows -->
+                                            <button type="button" class="btn btn-primary btn-sm mt-2" onclick="addFeeRow()">➕ Add Fee</button>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <!--Open Time-->
+                                        <div class="col-6">
+                                            <label for="selectOpeningHours" class="form-label fw-bold">Opening Hours:<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="selectOpeningHours" name="openingHours" required>
+                                                <option value="" selected disabled>Select Opening Hours</option>
+                                                <option value="9:00 AM - 5:00 PM">9:00 AM - 5:00 PM</option>
+                                                <option value="Full Day">Full Day</option>
+                                            </select>
+                                        </div>
+                                        <!--Venue Status-->
+                                        <div class="col-6">
+                                            <label for="selectVenueStatus" class="form-label fw-bold">Venue Status</label>
+                                            <select class="form-select" id="selectVenueStatus" name="venueStatus">
+                                                <option value="" selected disabled>Select Venue Status</option>
+                                                <option value="Open">Open</option>
+                                                <option value="Under Maintenance">Under Maintenance</option>
+                                                <option value="Temporarily Unavailable">Temporarily Unavailable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <!-- Province -->
+                                        <div class="col-6">
+                                            <label for="selectProvince" class="form-label fw-bold">Province:<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="selectProvince" name="province" required>
+                                                <option value="" selected disabled>Select Province</option>
+                                                <option value="Western">Western</option>
+                                                <option value="Central">Central</option>
+                                                <option value="Southern">Southern</option>
+                                                <!-- Add other provinces -->
+                                            </select>
+                                        </div>
+
+                                        <!-- District -->
+                                        <div class="col-6">
+                                            <label for="selectDistrict" class="form-label fw-bold">District:<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="selectDistrict" name="district" required>
+                                                <option value="" selected disabled>Select District</option>
+                                                <!-- District options will be dynamically loaded -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <!-- Category -->
+                                        <div class="col-6">
+                                            <label for="selectCategory" class="form-label fw-bold">Category:<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="selectCategory" name="category" required>
+                                                <option value="" selected disabled>Select Category</option>
+                                                <option value="Historical">Historical</option>
+                                                <option value="Nature">Nature</option>
+                                                <option value="Beach">Beach</option>
+                                                <option value="Adventure">Adventure</option>
+                                                <option value="Cultural">Cultural</option>
+                                                <option value="Religious">Religious</option>
+                                                <option value="Urban">Urban</option>
+                                                <option value="Rural">Rural</option>
+                                                <option value="Wellness">Wellness</option>
+                                                <option value="Eco-tourism">Eco-tourism</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Activities -->
+                                        <div class="col-6">
+                                            <label for="selectActivities" class="form-label fw-bold">Activities:<span class="text-danger">*</span></label>
+                                            <select class="form-select" id="selectActivities" name="activities" multiple required>
+                                                <option value="Hiking">Hiking / Trekking</option>
+                                                <option value="Wildlife Safari">Wildlife Safari</option>
+                                                <option value="Bird Watching">Bird Watching</option>
+                                                <option value="Water Sports">Water Sports</option>
+                                                <option value="Boat Tours">Boat Tours / Cruises</option>
+                                                <option value="Sightseeing">Sightseeing Tours</option>
+                                                <option value="Cultural Performances">Cultural Performances</option>
+                                                <option value="Photography">Photography</option>
+                                                <option value="Shopping">Shopping</option>
+                                                <option value="Cycling">Cycling</option>
+                                                <option value="Camping">Camping</option>
+                                                <option value="Fishing">Fishing</option>
+                                                <option value="Meditation">Meditation / Yoga</option>
+                                                <option value="Gastronomy">Gastronomy / Food Tasting</option>
+                                                <option value="Historical Visits">Historical Site Visits</option>
+                                                <option value="Museum Tours">Museum Tours</option>
+                                                <option value="Festivals">Festivals / Events</option>
+                                            </select>
+                                            <div class="form-text">Hold Ctrl (Cmd on Mac) to select multiple activities.</div>
+                                        </div>
+                                    </div>
+                                    <!--Buttons-->
+                                    <div class="row mt-2">
+                                        <div class="col-3 text-start">
+                                            <button type="button" class="btn btn-outline-info" onclick="buttonVenueDelete()"><i class="fa-regular fa-circle-check"></i> Clear</button>
+                                        </div>
+                                        <div class="col-9 text-end">
+                                            <button type="submit" id="buttonUpdate" class="btn btn-outline-warning" onclick="buttonVenueUpdate()"><i class="fa-solid fa-wrench"></i> Update</button>
+                                            <button type="submit" id="buttonSubmit" class="btn btn-outline-success" onclick="buttonVenueSubmit()"> <i class="fa-solid fa-thumbs-up"></i> Submit</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Table-->
+        <div class="row m-2 justify-content-center">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover table-striped" id="tableDestination">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Destination</th>
+                            <th>Audience Type</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>Opening Hours</th>
+                            <th>Venue Status</th>
+                            <th>Province</th>
+                            <th>District</th>
+                            <th>Category</th>
+                            <th>Activities</th>
+                            <th>Modify</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbodyDestination"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="/Jquery/jQuery-3.7.1.min.js"></script>
+<script src="/script/Common.js"></script>
+<script src="/uicontroller/Destination.js"></script>
+<script src="/script/Validator.js"></script>
+</body>
+</html>

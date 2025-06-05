@@ -27,6 +27,7 @@ public class Configuration {
                     .requestMatchers("/privilege/**").hasAnyAuthority("Admin" , "Travel Agent" , "Vehicle Owner" , "Guider" , "Driver")
                     .requestMatchers("/user/**").hasAnyAuthority("Admin" , "Travel Agent" , "Vehicle Owner" , "Guider" , "Driver")
                     .requestMatchers("/transport/**").hasAnyAuthority("Admin" , "Travel Agent" , "Vehicle Owner" , "Guider" , "Driver")
+                    .requestMatchers("/venue").hasAnyAuthority("Admin" , "Travel Agent" , "Vehicle Owner" , "Guider" , "Driver")
                     .anyRequest().authenticated();
 
         })

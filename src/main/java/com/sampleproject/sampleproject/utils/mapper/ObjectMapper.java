@@ -7,6 +7,7 @@ import com.sampleproject.sampleproject.dto.requestdto.VehicleRequestDto;
 import com.sampleproject.sampleproject.dto.responsedto.*;
 import com.sampleproject.sampleproject.entity.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
@@ -53,4 +54,12 @@ public interface ObjectMapper {
     List<AirConditioningResponseDto> airConditioningToAirConditioningResponseDto(List<AirConditioning> airConditionings);
 
     DesignationResponseDto designationToDesignationResponseDto(Designation designation);
+
+    @Mapping(target = "district", expression = "java(venue.getDistrict().getName())")
+    @Mapping(target = "province", expression = "java(venue.getDistrict().getProvince().getName())")
+    @Mapping(target = "venueStatus", expression = "java(venue.getVenueStatus().getName())")
+    @Mapping(target = "venueCategories", expression = "java(venue.getVenueCategories().stream().map(vc -> vc.getName()).collect(java.util.stream.Collectors.toList()))")
+    @Mapping(target = "venueActivities", expression = "java(venue.getVenueActivities().stream().map(va -> va.getName()).collect(java.util.stream.Collectors.toList()))")
+    VenueResponseDto venueToVenueResponseDto(Venue venue);
+    List<VenueResponseDto> venueToVenueResponseDto(List<Venue> venues);
 }
